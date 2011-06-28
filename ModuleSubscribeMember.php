@@ -163,7 +163,7 @@ class ModuleSubscribeMember extends ModuleSubscribe
 		// Subscribe
 		if ($this->Input->post('FORM_SUBMIT') == 'tl_subscribe_member' && !$doNotSubmit)
 		{
-			$this->addRecipient($arrMember);
+			$this->addMember($arrMember);
 		}
 	}
 	
@@ -171,7 +171,7 @@ class ModuleSubscribeMember extends ModuleSubscribe
 	/**
 	 * Add a new recipient
 	 */
-	protected function addRecipient($arrMember)
+	protected function addMember($arrMember)
 	{
 		$arrChannels = $this->Input->post('channels');
 
