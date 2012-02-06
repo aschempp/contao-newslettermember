@@ -110,6 +110,16 @@ class ModuleUnsubscribeMember extends ModuleUnsubscribe
 
 		// Get channels
 		$objChannel = $this->Database->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', $arrChannels) . ")");
+		
+		// HOOK: post unsubscribe callback
+		if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && is_array($GLOBALS['TL_HOOKS']['removeRecipient']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['removeRecipient'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($this->Input->post('email', true), $arrRemove, $objChannel->fetchEach('title'));
+			}
+		}
 
 		$strText = str_replace('##domain##', $this->Environment->host, $this->nl_unsubscribe);
 		$strText = str_replace(array('##channel##', '##channels##'), implode("\n", $objChannel->fetchEach('title')), $strText);
